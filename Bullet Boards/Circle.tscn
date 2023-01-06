@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://c1sxvsis8avte"]
+
+[ext_resource type="Script" path="res://Misc/Circle.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://blggsirp82i7k" path="res://Misc/BulletPongon.tscn" id="1_1apb8"]
+
+[node name="Pongon" instance=ExtResource("1_1apb8")]
+script = ExtResource("1")
+Quality = 30
+Size = 150.0
+InEditor = false
+SmoothPongon = PackedVector2Array(150, 0, 146.722, 31.1868, 137.032, 61.0105, 121.353, 88.1678, 100.37, 111.472, 75, 129.904, 46.3525, 142.658, 15.6793, 149.178, -15.6793, 149.178, -46.3526, 142.658, -75, 129.904, -100.37, 111.472, -121.353, 88.1678, -137.032, 61.0105, -146.722, 31.1867, -150, -1.31134e-05, -146.722, -31.1868, -137.032, -61.0105, -121.353, -88.1678, -100.37, -111.472, -75, -129.904, -46.3526, -142.658, -15.6793, -149.178, 15.6793, -149.178, 46.3526, -142.658, 75, -129.904, 100.37, -111.472, 121.353, -88.1678, 137.032, -61.0105, 146.722, -31.1868)
+Speed = 1.0
+
+[node name="Line2D" parent="." index="1"]
+default_color = Color(0, 0.509804, 0.00784314, 1)

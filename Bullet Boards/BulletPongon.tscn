@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3 uid="uid://blggsirp82i7k"]
+
+[ext_resource type="Script" path="res://Bullet Boards/BulletPongon.gd" id="1_d7e84"]
+
+[node name="Pongon" type="StaticBody2D"]
+position = Vector2(593, 328)
+script = ExtResource("1_d7e84")
+Polygon = PackedVector2Array(-100, -100, -100, 100, 100, 100, 100, -100)
+TargetPolygon = PackedVector2Array()
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-100, -100, -100, 100, 100, 100, 100, -100)
+
+[node name="Line2D" type="Line2D" parent="."]
+points = PackedVector2Array(-100, -100, -100, 100, 100, 100, 100, -100, -100, -100)
+width = 4.0
+default_color = Color(0, 0.509804, 0.00784314, 1)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+build_mode = 1
+polygon = PackedVector2Array(-100, -100, -100, 100, 100, 100, 100, -100)

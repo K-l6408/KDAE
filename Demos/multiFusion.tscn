@@ -1,0 +1,129 @@
+[gd_scene load_steps=11 format=3 uid="uid://k8oto5rhd3fu"]
+
+[ext_resource type="PackedScene" uid="uid://xvllx3ott6nq" path="res://Demos/fusion.tscn" id="1_okcfm"]
+[ext_resource type="Script" path="res://SOUL/Soul State.gd" id="2_38fa0"]
+
+[sub_resource type="Resource" id="Resource_47r2j"]
+script = ExtResource("2_38fa0")
+Red = false
+Orange = true
+Yellow = false
+Green = false
+Mint = false
+Cyan = false
+Blue = true
+Purple = false
+
+[sub_resource type="Resource" id="Resource_wnpaa"]
+script = ExtResource("2_38fa0")
+Red = false
+Orange = false
+Yellow = true
+Green = true
+Mint = false
+Cyan = false
+Blue = false
+Purple = false
+
+[sub_resource type="Resource" id="Resource_00qsm"]
+script = ExtResource("2_38fa0")
+Red = false
+Orange = false
+Yellow = false
+Green = false
+Mint = false
+Cyan = false
+Blue = true
+Purple = true
+
+[sub_resource type="Resource" id="Resource_o5tri"]
+script = ExtResource("2_38fa0")
+Red = false
+Orange = false
+Yellow = false
+Green = false
+Mint = true
+Cyan = false
+Blue = true
+Purple = false
+
+[sub_resource type="Resource" id="Resource_h2eka"]
+script = ExtResource("2_38fa0")
+Red = false
+Orange = true
+Yellow = false
+Green = false
+Mint = false
+Cyan = false
+Blue = false
+Purple = true
+
+[sub_resource type="Resource" id="Resource_qgrbp"]
+script = ExtResource("2_38fa0")
+Red = false
+Orange = false
+Yellow = false
+Green = true
+Mint = false
+Cyan = false
+Blue = true
+Purple = false
+
+[sub_resource type="Resource" id="Resource_ome1t"]
+script = ExtResource("2_38fa0")
+Red = false
+Orange = true
+Yellow = false
+Green = false
+Mint = false
+Cyan = true
+Blue = false
+Purple = false
+
+[sub_resource type="Resource" id="Resource_nsbac"]
+script = ExtResource("2_38fa0")
+Red = false
+Orange = false
+Yellow = false
+Green = true
+Mint = false
+Cyan = true
+Blue = false
+Purple = false
+
+[node name="fusions" type="Node2D"]
+
+[node name="fusion" parent="." instance=ExtResource("1_okcfm")]
+position = Vector2(146, 149)
+State = SubResource("Resource_47r2j")
+
+[node name="fusion2" parent="." instance=ExtResource("1_okcfm")]
+position = Vector2(436, 149)
+State = SubResource("Resource_wnpaa")
+Rotation = -90.0
+
+[node name="fusion3" parent="." instance=ExtResource("1_okcfm")]
+position = Vector2(716, 154)
+State = SubResource("Resource_00qsm")
+Rotation = 90.0
+
+[node name="fusion4" parent="." instance=ExtResource("1_okcfm")]
+position = Vector2(992, 154)
+State = SubResource("Resource_o5tri")
+Rotation = 45.0
+
+[node name="fusion5" parent="." instance=ExtResource("1_okcfm")]
+position = Vector2(147, 431)
+State = SubResource("Resource_h2eka")
+
+[node name="fusion6" parent="." instance=ExtResource("1_okcfm")]
+position = Vector2(437, 431)
+State = SubResource("Resource_qgrbp")
+
+[node name="fusion7" parent="." instance=ExtResource("1_okcfm")]
+position = Vector2(717, 436)
+State = SubResource("Resource_ome1t")
+
+[node name="fusion8" parent="." instance=ExtResource("1_okcfm")]
+position = Vector2(993, 436)
+State = SubResource("Resource_nsbac")

@@ -1,0 +1,187 @@
+[gd_scene load_steps=14 format=3 uid="uid://khs156tubdae"]
+
+[ext_resource type="Script" path="res://SOUL/All.gd" id="1_cmo2o"]
+[ext_resource type="Script" path="res://SOUL/Soul State.gd" id="2_8etoh"]
+[ext_resource type="AudioStream" uid="uid://d0ketomdoeykn" path="res://Assets/Audio/TP.wav" id="3_am3v0"]
+[ext_resource type="Texture2D" uid="uid://bgu8wvge7lg5w" path="res://Assets/Sprites/TP.png" id="4_cekfo"]
+[ext_resource type="Script" path="res://SOUL/CyanParry.gd" id="4_lobpj"]
+[ext_resource type="Texture2D" uid="uid://bko3qagitwb04" path="res://Assets/Sprites/SOUL.png" id="4_odib5"]
+[ext_resource type="Script" path="res://SOUL/TP Sprite.gd" id="5_pwkb7"]
+[ext_resource type="AudioStream" uid="uid://0lj2iws54oj4" path="res://Assets/Audio/Shot_Charging.wav" id="5_t7nht"]
+[ext_resource type="FontFile" uid="uid://cddm5ihdbkpkc" path="res://Assets/Mars.ttf" id="7_lb4ba"]
+[ext_resource type="Script" path="res://SOUL/GreenShield.gd" id="10_4b6yx"]
+
+[sub_resource type="Resource" id="Resource_1pawt"]
+script = ExtResource("2_8etoh")
+Red = false
+Orange = false
+Yellow = false
+Green = false
+Mint = false
+Cyan = false
+Blue = false
+Purple = false
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_khjwg"]
+radius = 40.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lvcve"]
+size = Vector2(10, 10)
+
+[node name="Soul" type="CharacterBody2D"]
+texture_filter = 1
+position = Vector2(606, 352)
+scale = Vector2(1.5, 1.5)
+motion_mode = 1
+safe_margin = 2.0
+script = ExtResource("1_cmo2o")
+State = SubResource("Resource_1pawt")
+purpleLineCurrent = 1.0
+
+[node name="TP" type="Area2D" parent="."]
+position = Vector2(0, 3.33333)
+scale = Vector2(3, 3)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TP"]
+position = Vector2(0, -2)
+polygon = PackedVector2Array(-1.19209e-06, -4, 4, -8, 6, -8, 8, -6, 8, 1.33333, -1.19209e-06, 9.33333, -8, 1.33333, -8, -6, -6, -8, -4, -8)
+
+[node name="Parry" type="Area2D" parent="."]
+script = ExtResource("4_lobpj")
+
+[node name="Shape" type="CollisionShape2D" parent="Parry"]
+shape = SubResource("CircleShape2D_khjwg")
+disabled = true
+
+[node name="Shield" type="Area2D" parent="."]
+visible = false
+rotation = 1.5708
+monitoring = false
+monitorable = false
+script = ExtResource("10_4b6yx")
+
+[node name="Line2D" type="Line2D" parent="Shield"]
+position = Vector2(0, 7.62939e-06)
+points = PackedVector2Array(-16, -37, -9, -40, 0, -41, 8, -40, 15, -38, 0, 0)
+width = 5.0
+default_color = Color(0.380392, 0.121569, 0.690196, 1)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Shield"]
+polygon = PackedVector2Array(-17, -39, -8.6666, -42.6667, 6.10352e-05, -43.3333, 9.33339, -42, 18.6667, -39.3333, 16, -34, -15, -34)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+position = Vector2(0, -0.666672)
+scale = Vector2(1.2, 1.2)
+polygon = PackedVector2Array(-1.19209e-06, -4, 4, -8, 6, -8, 8, -6, 8, 1.33333, -1.19209e-06, 9.33333, -8, 1.33333, -8, -6, -6, -8, -4, -8)
+
+[node name="Sprite" type="Sprite2D" parent="."]
+self_modulate = Color(0, 0, 0, 1)
+position = Vector2(-9.33331, -10)
+texture = ExtResource("4_odib5")
+centered = false
+
+[node name="Red" type="Sprite2D" parent="Sprite"]
+visible = false
+modulate = Color(1, 0, 0, 1)
+texture = ExtResource("4_odib5")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 0, 20)
+
+[node name="Orange" type="Sprite2D" parent="Sprite"]
+visible = false
+modulate = Color(1, 0.658824, 0, 1)
+texture = ExtResource("4_odib5")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 0, 20)
+
+[node name="Yellow" type="Sprite2D" parent="Sprite"]
+visible = false
+modulate = Color(1, 1, 0, 1)
+texture = ExtResource("4_odib5")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 9.5, 20)
+
+[node name="Green" type="Sprite2D" parent="Sprite"]
+visible = false
+modulate = Color(0, 0.752941, 0, 1)
+texture = ExtResource("4_odib5")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 19, 20)
+
+[node name="Mint" type="Sprite2D" parent="Sprite"]
+visible = false
+modulate = Color(0.0235294, 0.788235, 0.509804, 1)
+texture = ExtResource("4_odib5")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 19, 20)
+
+[node name="Cyan" type="Sprite2D" parent="Sprite"]
+visible = false
+modulate = Color(0, 1, 1, 1)
+texture = ExtResource("4_odib5")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 0, 20)
+
+[node name="Blue" type="Sprite2D" parent="Sprite"]
+visible = false
+modulate = Color(0, 0.235294, 1, 1)
+texture = ExtResource("4_odib5")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 0, 20)
+
+[node name="Purple" type="Sprite2D" parent="Sprite"]
+visible = false
+modulate = Color(0.835294, 0.207843, 0.85098, 1)
+texture = ExtResource("4_odib5")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 0, 20)
+
+[node name="Charge" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+texture = ExtResource("4_odib5")
+
+[node name="HitBox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+position = Vector2(-2.98023e-08, -1.63913e-07)
+shape = SubResource("RectangleShape2D_lvcve")
+debug_color = Color(0, 0.6, 0.701961, 0.156863)
+
+[node name="Aud" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_am3v0")
+volume_db = -0.5
+attenuation = 2.0
+
+[node name="Aud2" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_t7nht")
+autoplay = true
+attenuation = 2.0
+
+[node name="TP Sprite" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+texture_filter = 2
+position = Vector2(0, -0.666666)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("4_cekfo")
+script = ExtResource("5_pwkb7")
+
+[node name="Label" type="Label" parent="."]
+visible = false
+offset_left = -18.0
+offset_top = -7.0
+offset_right = 20.0
+offset_bottom = 12.0
+theme_override_fonts/font = ExtResource("7_lb4ba")
+text = "2"
+horizontal_alignment = 1
+
+[connection signal="finished" from="Aud2" to="." method="audio"]
+[connection signal="finished" from="Aud2" to="Aud2" method="play"]

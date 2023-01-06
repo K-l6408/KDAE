@@ -1,0 +1,146 @@
+[gd_scene load_steps=8 format=3 uid="uid://doehtfo6ahf15"]
+
+[ext_resource type="PackedScene" uid="uid://41vr7h3bcr8" path="res://Bullet Boards/BulletBox.tscn" id="1"]
+[ext_resource type="Script" path="res://Demos/gravity.gd" id="3"]
+[ext_resource type="PackedScene" uid="uid://khs156tubdae" path="res://SOUL/Soul.tscn" id="3_atxly"]
+[ext_resource type="FontFile" uid="uid://cddm5ihdbkpkc" path="res://Assets/Mars.ttf" id="3_fmmp5"]
+[ext_resource type="Script" path="res://SOUL/Soul State.gd" id="4_nkrbu"]
+
+[sub_resource type="Resource" id="Resource_0jihk"]
+script = ExtResource("4_nkrbu")
+Red = false
+Orange = false
+Yellow = false
+Green = false
+Mint = false
+Cyan = false
+Blue = true
+Purple = false
+
+[sub_resource type="Theme" id="Theme_cm5xx"]
+default_font = ExtResource("3_fmmp5")
+default_font_size = 20
+
+[node name="GravTest" type="Node2D"]
+texture_filter = 1
+script = ExtResource("3")
+
+[node name="Box" parent="." instance=ExtResource("1")]
+position = Vector2(498, 333)
+Size = Vector2(200, 200)
+
+[node name="HSlider" type="HSlider" parent="."]
+offset_left = 310.0
+offset_top = 139.0
+offset_right = 670.0
+offset_bottom = 155.0
+focus_mode = 0
+max_value = 360.0
+step = 15.0
+tick_count = 25
+
+[node name="0" type="Label" parent="HSlider"]
+offset_left = 1.0
+offset_top = -28.0
+offset_right = 20.0
+offset_bottom = 6.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_fmmp5")
+theme_override_font_sizes/font_size = 30
+text = "0"
+
+[node name="1" type="Label" parent="HSlider"]
+offset_left = 35.0
+offset_top = 22.0
+offset_right = 73.0
+offset_bottom = 56.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_fmmp5")
+theme_override_font_sizes/font_size = 30
+text = "45"
+
+[node name="2" type="Label" parent="HSlider"]
+offset_left = 80.0
+offset_top = -27.0
+offset_right = 118.0
+offset_bottom = 7.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_fmmp5")
+theme_override_font_sizes/font_size = 30
+text = "90"
+
+[node name="3" type="Label" parent="HSlider"]
+offset_left = 113.0
+offset_top = 22.0
+offset_right = 170.0
+offset_bottom = 56.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_fmmp5")
+theme_override_font_sizes/font_size = 30
+text = "135"
+
+[node name="4" type="Label" parent="HSlider"]
+offset_left = 153.0
+offset_top = -27.0
+offset_right = 210.0
+offset_bottom = 7.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_fmmp5")
+theme_override_font_sizes/font_size = 30
+text = "180"
+
+[node name="5" type="Label" parent="HSlider"]
+offset_left = 187.0
+offset_top = 23.0
+offset_right = 255.0
+offset_bottom = 57.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_fmmp5")
+theme_override_font_sizes/font_size = 30
+text = "-135"
+
+[node name="6" type="Label" parent="HSlider"]
+offset_left = 348.0
+offset_top = -27.0
+offset_right = 367.0
+offset_bottom = 7.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_fmmp5")
+theme_override_font_sizes/font_size = 30
+text = "0"
+
+[node name="7" type="Label" parent="HSlider"]
+offset_left = 282.0
+offset_top = 23.0
+offset_right = 331.0
+offset_bottom = 57.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_fmmp5")
+theme_override_font_sizes/font_size = 30
+text = "-45"
+
+[node name="8" type="Label" parent="HSlider"]
+offset_left = 238.0
+offset_top = -27.0
+offset_right = 287.0
+offset_bottom = 7.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_fmmp5")
+theme_override_font_sizes/font_size = 30
+text = "-90"
+
+[node name="Soul" parent="." instance=ExtResource("3_atxly")]
+position = Vector2(498, 333)
+motion_mode = 0
+State = SubResource("Resource_0jihk")
+
+[node name="SpinBox" type="SpinBox" parent="."]
+offset_left = 458.0
+offset_top = 456.0
+offset_right = 542.0
+offset_bottom = 487.0
+theme = SubResource("Theme_cm5xx")
+min_value = -1.0
+max_value = 99.0
+value = 2.0
+alignment = 1

@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://xvllx3ott6nq"]
+
+[ext_resource type="PackedScene" uid="uid://41vr7h3bcr8" path="res://Bullet Boards/BulletBox.tscn" id="1_fwelq"]
+[ext_resource type="Script" path="res://Demos/fusion.gd" id="1_n422r"]
+[ext_resource type="PackedScene" uid="uid://khs156tubdae" path="res://SOUL/Soul.tscn" id="2_xejtu"]
+[ext_resource type="Script" path="res://SOUL/Soul State.gd" id="3_2jh41"]
+
+[sub_resource type="Resource" id="Resource_rcesh"]
+script = ExtResource("3_2jh41")
+Red = false
+Orange = false
+Yellow = false
+Green = false
+Mint = false
+Cyan = false
+Blue = false
+Purple = false
+
+[node name="fusion" type="Node2D"]
+position = Vector2(574, 309)
+script = ExtResource("1_n422r")
+State = SubResource("Resource_rcesh")
+Rotation = 0.0
+
+[node name="Box" parent="." instance=ExtResource("1_fwelq")]
+position = Vector2(0, 0)
+Size = Vector2(250, 250)
+
+[node name="Hide" type="ColorRect" parent="Box"]
+clip_contents = true
+offset_left = -120.0
+offset_top = -120.0
+offset_right = 121.0
+offset_bottom = 121.0
+color = Color(0, 0, 0, 1)
+
+[node name="Soul" parent="Box/Hide" instance=ExtResource("2_xejtu")]
+position = Vector2(120, 120)
+State = SubResource("Resource_rcesh")

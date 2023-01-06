@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://c5wmydh03tdfq"]
+
+[ext_resource type="Script" path="res://SOUL/Charged_Bullet.gd" id="1_jbfm0"]
+[ext_resource type="Texture2D" uid="uid://dgqe4kx4qkjx1" path="res://Assets/Sprites/ChargedBullet.png" id="2_b5bor"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n2i1x"]
+size = Vector2(28, 44)
+
+[node name="Charged_Bullet" type="Area2D"]
+script = ExtResource("1_jbfm0")
+
+[node name="Spr" type="Sprite2D" parent="."]
+rotation = 1.5708
+texture = ExtResource("2_b5bor")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_n2i1x")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(0, -2.38419e-06)
+scale = Vector2(1.4, 2.2)
+
+[connection signal="area_entered" from="." to="." method="Collision"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="queue_free"]

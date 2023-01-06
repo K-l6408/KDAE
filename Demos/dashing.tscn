@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://bvx1wrauainwc"]
+
+[ext_resource type="PackedScene" uid="uid://41vr7h3bcr8" path="res://Bullet Boards/BulletBox.tscn" id="1_o6mxj"]
+[ext_resource type="PackedScene" uid="uid://khs156tubdae" path="res://SOUL/Soul.tscn" id="2_2t3wx"]
+[ext_resource type="Script" path="res://SOUL/Soul State.gd" id="3_0oi0n"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_n8xqx"]
+a = Vector2(0, -200)
+b = Vector2(0, 200)
+
+[sub_resource type="Resource" id="Resource_27fcb"]
+script = ExtResource("3_0oi0n")
+Red = false
+Orange = true
+Yellow = false
+Green = false
+Mint = false
+Cyan = false
+Blue = false
+Purple = false
+
+[node name="Dashing" type="Node2D"]
+
+[node name="Box" parent="." instance=ExtResource("1_o6mxj")]
+position = Vector2(576, 320)
+Size = Vector2(500, 400)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(576, 325)
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("SegmentShape2D_n8xqx")
+
+[node name="Line2D" type="Line2D" parent="StaticBody2D"]
+points = PackedVector2Array(0, -200, 0, 191)
+width = 4.0
+default_color = Color(0.415686, 0, 0.686275, 1)
+
+[node name="Soul" parent="." instance=ExtResource("2_2t3wx")]
+position = Vector2(421, 320)
+State = SubResource("Resource_27fcb")
