@@ -125,7 +125,7 @@ func _physics_process(delta):
 		if State.Blue:
 			var j
 			if State.Orange:
-				blueMaxJumps = 1
+				jumps = int(is_on_floor())
 				j = -pvel.rotated(-global_rotation).y
 				var pj = -v.rotated(-global_rotation).y
 				if j < -10 and pj > -10:
@@ -165,10 +165,10 @@ func _physics_process(delta):
 			else:
 				$Label.hide()
 			fallspd += 100 * delta * 4
-			if State.Orange:
-				velocity += fallspd * (Vector2.DOWN.rotated(global_rotation))
-			else:
-				velocity += fallspd * (Vector2.DOWN.rotated(global_rotation))
+			var p = velocity.rotated(-global_rotation)
+			p.y = 0
+			velocity = p.rotated(global_rotation)
+			velocity += fallspd * (Vector2.DOWN.rotated(global_rotation))
 		if State.Orange:
 			set_collision_layer_value(2, dash < 0)
 			set_collision_mask_value(2, dash < 0)
@@ -184,7 +184,12 @@ func _physics_process(delta):
 				else:
 					velocity /= .375
 		if State.Cyan:
-			velocity /= 2
+			if State.Blue:
+				var p = velocity.rotated(-global_rotation)
+				p.x /= 2
+				velocity = p.rotated(global_rotation)
+			else:
+				velocity /= 2
 			if cyancldwn < delta:
 				if Input.is_action_just_pressed("parry"):
 					$Parry/Shape.disabled = false
@@ -216,7 +221,12 @@ func _physics_process(delta):
 			if mintshr > 0:
 				scale.x = lerp(scale.x, mintStandardSize / 2, delta)
 				scale.y = lerp(scale.y, mintStandardSize / 2, delta)
-				velocity *= 3
+				if State.Blue:
+					var p = velocity.rotated(-global_rotation)
+					p.x *= 3
+					velocity = p.rotated(global_rotation)
+				else:
+					velocity *= 3
 				if (mintshr + .5) - floor(mintshr + .5) < delta:
 					modulate.v = 0
 				elif modulate.v < 1:
@@ -291,8 +301,6 @@ func handle_input():
 				pvel = vel * .75
 		if State.Orange:
 			velocity = pvel
-	if State.Blue:
-		velocity = velocity.project(Vector2.LEFT.rotated(global_rotation))
 	if State.value() != SoulState.GREEN and not State.Orange:
 		velocity = vel
 

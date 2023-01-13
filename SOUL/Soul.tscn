@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://khs156tubdae"]
+[gd_scene load_steps=17 format=3 uid="uid://khs156tubdae"]
 
 [ext_resource type="Script" path="res://SOUL/All.gd" id="1_cmo2o"]
 [ext_resource type="Script" path="res://SOUL/Soul State.gd" id="2_8etoh"]
@@ -39,8 +39,6 @@ orbit_velocity_max = 0.0
 scale_min = 1.5
 scale_max = 1.5
 color_ramp = SubResource("GradientTexture1D_hfhf3")
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_inyot"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lvcve"]
 size = Vector2(10, 10)
@@ -90,7 +88,6 @@ polygon = PackedVector2Array(-1.19209e-06, -4, 4, -8, 6, -8, 8, -6, 8, 1.33333, 
 
 [node name="Trail" type="GPUParticles2D" parent="."]
 process_material = SubResource("ParticleProcessMaterial_ujc20")
-texture = SubResource("ViewportTexture_inyot")
 lifetime = 0.5
 
 [node name="Sprite" type="SubViewport" parent="."]
@@ -162,7 +159,6 @@ region_enabled = true
 region_rect = Rect2(0, 0, 19, 20)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = SubResource("ViewportTexture_inyot")
 
 [node name="Charge" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0)
