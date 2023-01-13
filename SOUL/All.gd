@@ -39,9 +39,12 @@ var h = false
 
 func _ready():
 	plc = purpleLineCurrent
+	jumps = blueMaxJumps
 	var res = SoulState.new()
 	ResourceSaver.save(res, "SoulState.tscn")
 	setState(State)
+	$Trail   .texture = $Sprite.get_texture()
+	$Sprite2D.texture = $Sprite.get_texture()
 
 func setState(value):
 	if get_parent():
@@ -95,6 +98,9 @@ func _process(_delta):
 	$Shield.monitorable = State.Green
 	$Shield.visible     = State.Green
 	$Shield.setang(pvel.angle() + PI/2)
+	$Trail.process_material.angle_min = -global_rotation_degrees
+	$Trail.process_material.angle_max = -global_rotation_degrees
+	$Trail.emitting = State.Orange
 
 func _physics_process(delta):
 	$Label.hide()
@@ -116,6 +122,53 @@ func _physics_process(delta):
 			vel = vel.rotated(global_rotation)
 			if Input.is_action_pressed("slowdown"):
 				velocity /= 2
+		if State.Blue:
+			var j
+			if State.Orange:
+				blueMaxJumps = 1
+				j = -pvel.rotated(-global_rotation).y
+				var pj = -v.rotated(-global_rotation).y
+				if j < -10 and pj > -10:
+					slam(rotation_degrees, 300)
+				j = 100
+			else:
+				j = -vel.rotated(-global_rotation).y
+				if j < 0:
+					j = 0
+					jumping = false
+			if is_on_floor():
+				jumps = blueMaxJumps
+				fallspd = 0
+				jumping = false
+				pvel = Vector2(pvel.rotated(-global_rotation).x, -100).rotated(global_rotation)
+			elif jumps == blueMaxJumps:
+				jumps -= 1
+			if is_on_ceiling():
+				jumps = 0
+				fallspd = abs(fallspd)
+			if j > 10:
+				if jumping:
+					fallspd -= (3 - fallspd) * delta * 2.5
+				elif jumps > 0 or blueMaxJumps < 0:
+					fallspd = -150
+					jumps -= 1
+					jumping = true
+			else:
+				jumping = false
+			var lt = jumps + 1 - int(is_on_floor())
+			if lt > 1:
+				$Label.show()
+				$Label.text = str(lt)
+			elif lt < 0:
+				$Label.show()
+				$Label.text = "inf"
+			else:
+				$Label.hide()
+			fallspd += 100 * delta * 4
+			if State.Orange:
+				velocity += fallspd * (Vector2.DOWN.rotated(global_rotation))
+			else:
+				velocity += fallspd * (Vector2.DOWN.rotated(global_rotation))
 		if State.Orange:
 			set_collision_layer_value(2, dash < 0)
 			set_collision_mask_value(2, dash < 0)
@@ -181,54 +234,6 @@ func _physics_process(delta):
 			if Input.is_action_just_released("shoot"):
 				shoot()
 			$Charge.modulate.a = min((charge - .2) * 2, 1)
-		if State.Blue:
-			var j
-			if State.Orange:
-				blueMaxJumps = 1
-				j = 100 - pvel.rotated(-global_rotation).y
-				if j <= 50:
-					j = 100
-					jumping = false
-					var p = pvel.rotated(-global_rotation)
-					p.y = -1
-					pvel = p.rotated(global_rotation)
-			else:
-				j = -vel.rotated(-global_rotation).y
-				if j < 0:
-					j = 0
-					jumping = false
-			if is_on_floor():
-				jumps = blueMaxJumps
-				fallspd = 0
-				jumping = false
-			elif jumps == blueMaxJumps:
-				jumps -= 1
-			if is_on_ceiling():
-				jumps = 0
-				fallspd = abs(fallspd)
-			if j > 10:
-				if jumping:
-					fallspd -= (3 - fallspd) * delta * 2.5
-				elif jumps > 0 or blueMaxJumps < 0:
-					fallspd = -150
-					jumps -= 1
-					jumping = true
-			else:
-				jumping = false
-			var lt = jumps + 1 - int(is_on_floor())
-			if lt > 1:
-				$Label.show()
-				$Label.text = str(lt)
-			elif lt < 0:
-				$Label.show()
-				$Label.text = "inf"
-			else:
-				$Label.hide()
-			fallspd += 100 * delta * 4
-			if State.Orange:
-				velocity += fallspd * (Vector2.DOWN.rotated(global_rotation))
-			else:
-				velocity += fallspd * (Vector2.DOWN.rotated(global_rotation))
 		if State.value() != SoulState.GREEN:
 			move_and_slide()
 	if State.Purple:
@@ -241,7 +246,7 @@ func process_texture():
 	for j in $Sprite.get_children():
 		if State.get(j.name):
 			j.show()
-			j.region_rect.position.x = i / total * 20.
+			j.region_rect.position.x = i / total * 19.
 			i += 1
 			j.region_rect.size.x = 19. / total
 		else:

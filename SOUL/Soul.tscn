@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://khs156tubdae"]
+[gd_scene load_steps=18 format=3 uid="uid://khs156tubdae"]
 
 [ext_resource type="Script" path="res://SOUL/All.gd" id="1_cmo2o"]
 [ext_resource type="Script" path="res://SOUL/Soul State.gd" id="2_8etoh"]
@@ -14,9 +14,9 @@
 [sub_resource type="Resource" id="Resource_1pawt"]
 script = ExtResource("2_8etoh")
 Red = false
-Orange = false
+Orange = true
 Yellow = false
-Green = false
+Green = true
 Mint = false
 Cyan = false
 Blue = false
@@ -24,6 +24,23 @@ Purple = false
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_khjwg"]
 radius = 40.0
+
+[sub_resource type="Gradient" id="Gradient_n3rwb"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_hfhf3"]
+gradient = SubResource("Gradient_n3rwb")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ujc20"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 0, 0)
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+scale_min = 1.5
+scale_max = 1.5
+color_ramp = SubResource("GradientTexture1D_hfhf3")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_inyot"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lvcve"]
 size = Vector2(10, 10)
@@ -54,10 +71,7 @@ shape = SubResource("CircleShape2D_khjwg")
 disabled = true
 
 [node name="Shield" type="Area2D" parent="."]
-visible = false
-rotation = 1.5708
-monitoring = false
-monitorable = false
+rotation = -3.14159
 script = ExtResource("10_4b6yx")
 
 [node name="Line2D" type="Line2D" parent="Shield"]
@@ -74,11 +88,14 @@ position = Vector2(0, -0.666672)
 scale = Vector2(1.2, 1.2)
 polygon = PackedVector2Array(-1.19209e-06, -4, 4, -8, 6, -8, 8, -6, 8, 1.33333, -1.19209e-06, 9.33333, -8, 1.33333, -8, -6, -6, -8, -4, -8)
 
-[node name="Sprite" type="Sprite2D" parent="."]
-self_modulate = Color(0, 0, 0, 1)
-position = Vector2(-9.33331, -10)
-texture = ExtResource("4_odib5")
-centered = false
+[node name="Trail" type="GPUParticles2D" parent="."]
+process_material = SubResource("ParticleProcessMaterial_ujc20")
+texture = SubResource("ViewportTexture_inyot")
+lifetime = 0.5
+
+[node name="Sprite" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(19, 20)
 
 [node name="Red" type="Sprite2D" parent="Sprite"]
 visible = false
@@ -86,15 +103,14 @@ modulate = Color(1, 0, 0, 1)
 texture = ExtResource("4_odib5")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 0, 20)
+region_rect = Rect2(0, 0, 9.5, 20)
 
 [node name="Orange" type="Sprite2D" parent="Sprite"]
-visible = false
 modulate = Color(1, 0.658824, 0, 1)
 texture = ExtResource("4_odib5")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 0, 20)
+region_rect = Rect2(0, 0, 9.5, 20)
 
 [node name="Yellow" type="Sprite2D" parent="Sprite"]
 visible = false
@@ -105,12 +121,12 @@ region_enabled = true
 region_rect = Rect2(0, 0, 9.5, 20)
 
 [node name="Green" type="Sprite2D" parent="Sprite"]
-visible = false
 modulate = Color(0, 0.752941, 0, 1)
+position = Vector2(9.5, 0)
 texture = ExtResource("4_odib5")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 19, 20)
+region_rect = Rect2(9.5, 0, 9.5, 20)
 
 [node name="Mint" type="Sprite2D" parent="Sprite"]
 visible = false
@@ -123,10 +139,11 @@ region_rect = Rect2(0, 0, 19, 20)
 [node name="Cyan" type="Sprite2D" parent="Sprite"]
 visible = false
 modulate = Color(0, 1, 1, 1)
+position = Vector2(9.5, 0)
 texture = ExtResource("4_odib5")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 0, 20)
+region_rect = Rect2(9.5, 0, 9.5, 20)
 
 [node name="Blue" type="Sprite2D" parent="Sprite"]
 visible = false
@@ -134,7 +151,7 @@ modulate = Color(0, 0.235294, 1, 1)
 texture = ExtResource("4_odib5")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 0, 20)
+region_rect = Rect2(0, 0, 19, 20)
 
 [node name="Purple" type="Sprite2D" parent="Sprite"]
 visible = false
@@ -142,7 +159,10 @@ modulate = Color(0.835294, 0.207843, 0.85098, 1)
 texture = ExtResource("4_odib5")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 0, 20)
+region_rect = Rect2(0, 0, 19, 20)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("ViewportTexture_inyot")
 
 [node name="Charge" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0)

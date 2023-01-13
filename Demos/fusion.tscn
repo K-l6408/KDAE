@@ -8,12 +8,12 @@
 [sub_resource type="Resource" id="Resource_rcesh"]
 script = ExtResource("3_2jh41")
 Red = false
-Orange = false
+Orange = true
 Yellow = false
 Green = false
 Mint = false
 Cyan = false
-Blue = false
+Blue = true
 Purple = false
 
 [node name="fusion" type="Node2D"]
@@ -36,4 +36,5 @@ color = Color(0, 0, 0, 1)
 
 [node name="Soul" parent="Box/Hide" instance=ExtResource("2_xejtu")]
 position = Vector2(120, 120)
+motion_mode = 0
 State = SubResource("Resource_rcesh")

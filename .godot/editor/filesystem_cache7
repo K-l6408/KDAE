@@ -1,7 +1,8 @@
 0b7126e0c6e86d3ec295a72f5aa6e0bd
-::res://::1673031681
+::res://::1673620894
 AtkType.gd::GDScript::-1::1672998523::0::1::::Atk<>Resource<>::
-icon.svg::CompressedTexture2D::2816380483485933053::1673026698::1673026704::1::::<><>::
+icon.svg::CompressedTexture2D::2816380483485933053::1673037139::1673107835::1::::<><>::
+README.md::TextFile::-1::1673036480::0::1::::<><>::
 ::res://Assets/::1673026703
 Mars.ttf::FontFile::4990383640431308434::1657551717::1673026703::1::::<><>::
 NotoSans-Bold.ttf::FontFile::218514117496155032::1361919600::1673026703::1::::<><>::
@@ -23,22 +24,23 @@ BulletPongon.gd::GDScript::-1::1672998729::0::1::::<>StaticBody2D<>::
 BulletPongon.tscn::PackedScene::3171281123657881074::1673011869::0::1::::<><>::res://Bullet Boards/BulletPongon.gd
 Circle.gd::GDScript::-1::1672159866::0::1::::<><>::
 Circle.tscn::PackedScene::6636345052694451118::1672159866::0::1::::<><>::res://Misc/Circle.gd<>uid://blggsirp82i7k
-::res://Demos/::1673029056
+::res://Demos/::1673108044
 dashing.tscn::PackedScene::3909485911518982882::1673017052::0::1::::<><>::uid://41vr7h3bcr8<>uid://khs156tubdae<>res://SOUL/Soul State.gd
 fusion.gd::GDScript::-1::1673028056::0::1::::<>Node2D<>::
-fusion.tscn::PackedScene::1658384119117231438::1673028917::0::1::::<><>::uid://41vr7h3bcr8<>res://Demos/fusion.gd<>uid://khs156tubdae<>res://SOUL/Soul State.gd
+fusion.tscn::PackedScene::1658384119117231438::1673033222::0::1::::<><>::uid://41vr7h3bcr8<>res://Demos/fusion.gd<>uid://khs156tubdae<>res://SOUL/Soul State.gd
 gravity.gd::GDScript::-1::1673011294::0::1::::<>Node2D<>::
 gravity.tscn::PackedScene::8150622607714346430::1673017052::0::1::::<><>::uid://41vr7h3bcr8<>res://Demos/gravity.gd<>uid://khs156tubdae<>uid://cddm5ihdbkpkc<>res://SOUL/Soul State.gd
-multiFusion.tscn::PackedScene::770897652700161494::1673029056::0::1::::<><>::uid://xvllx3ott6nq<>res://SOUL/Soul State.gd
-::res://SOUL/::1673029056
-All.gd::GDScript::-1::1673027968::0::1::::<>CharacterBody2D<>::
-Bullet.gd::GDScript::-1::1672948878::0::1::::<>Area2D<>::
+multiFusion.tscn::PackedScene::770897652700161494::1673108044::0::1::::<><>::uid://xvllx3ott6nq<>res://SOUL/Soul State.gd
+::res://icons/::1673031240
+SoulState.svg::CompressedTexture2D::5904978580835595421::1673031057::1673031240::1::::<><>::
+::res://SOUL/::1673620743
+All.gd::GDScript::-1::1673620743::0::1::::<>CharacterBody2D<>::
+Bullet.gd::GDScript::-1::1673035739::0::1::::<>Area2D<>::
 Bullet.tscn::PackedScene::311143204210291325::1672998086::0::1::::<><>::res://SOUL/Bullet.gd<>uid://p4vq57qxejby
-Charged_Bullet.gd::GDScript::-1::1672948881::0::1::::<>Area2D<>::
+Charged_Bullet.gd::GDScript::-1::1673035745::0::1::::<>Area2D<>::
 Charged_Bullet.tscn::PackedScene::6924694619641138558::1672998115::0::1::::<><>::res://SOUL/Charged_Bullet.gd<>uid://dgqe4kx4qkjx1
 CyanParry.gd::GDScript::-1::1673014671::0::1::::<>Area2D<>::
 GreenShield.gd::GDScript::-1::1672951794::0::1::::<>Area2D<>::
-Soul State.gd::GDScript::-1::1673029056::0::1::::SoulState<>Resource<>::
-Soul.gd::GDScript::-1::1672159866::0::1::::<>CharacterBody2D<>::
-Soul.tscn::PackedScene::717480041649549688::1673028923::0::1::::<><>::res://SOUL/All.gd<>res://SOUL/Soul State.gd<>uid://d0ketomdoeykn<>uid://bgu8wvge7lg5w<>res://SOUL/CyanParry.gd<>uid://bko3qagitwb04<>res://SOUL/TP Sprite.gd<>uid://0lj2iws54oj4<>uid://cddm5ihdbkpkc<>res://SOUL/GreenShield.gd
+Soul State.gd::GDScript::-1::1673031904::0::1::::SoulState<>Resource<>::
+Soul.tscn::PackedScene::717480041649549688::1673269923::0::1::::<><>::res://SOUL/All.gd<>res://SOUL/Soul State.gd<>uid://d0ketomdoeykn<>uid://bgu8wvge7lg5w<>res://SOUL/CyanParry.gd<>uid://bko3qagitwb04<>res://SOUL/TP Sprite.gd<>uid://0lj2iws54oj4<>uid://cddm5ihdbkpkc<>res://SOUL/GreenShield.gd
 TP Sprite.gd::GDScript::-1::1672401530::0::1::::<>Sprite2D<>::
