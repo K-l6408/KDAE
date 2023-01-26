@@ -1,22 +1,41 @@
-extends CharacterBody2D
 @tool
+extends CharacterBody2D
+class_name Soul
+
+@icon("res://icons/Soul.svg")
 
 @onready @export var State : SoulState : set = setState
-@export var inverted_ctrl = false
-@export var yellowChargedShots = true
-@export var yellowMouseTarget = false
-@export var mintStandardSize = 1.5
-@export var blueMaxJumps = 2
-@export var purpleLineNum = 3
-@export var purpleLineSpacing = 100
-@export var purpleLineCurrent : float
-@export var purpleXLimit = 300.
-@export var purpleLineX = 0.0
+@export_group("Settings")
+@export var inverted_controls = false
+@export_group("Settings/Red")
+@export var slowdown_action := "ui_cancel"
+@export_group("Settings/Orange")
+@export var dash_action := "ui_accept"
+@export_group("Settings/Yellow")
+@export var shot_action := "ui_accept"
+@export var charged_shots := true
+@export var mouse_target := false
+@export_group("Settings/Green")
+@export var first_shield := true
+@export var second_shield := false
+@export_group("Settings/Mint")
+@export var shrink_action := "ui_cancel"
+@export var default_size := 1.5
+@export_group("Settings/Cyan")
+@export var parry_action := "ui_cancel"
+@export_group("Settings/Blue")
+@export var maximum_jumps = 2
+@export_group("Settings/Purple")
+@export var line_number = 3
+@export var line_spacing = 100
+@export var current_line = 0.0
+@export var line_lenght = 300.
+var purpleLineX = 0.0
 @onready var purpleStartPos := Vector2(
 	position.x,
-	position.y - purpleLineCurrent*(purpleLineSpacing))
-const tp   := preload("res://Assets/Audio/TP.wav")
-const ow   := preload("res://Assets/Audio/Ouch.wav")
+	position.y - current_line*(line_spacing))
+const   tp := preload("res://Assets/Audio/TP.wav")
+const   ow := preload("res://Assets/Audio/Ouch.wav")
 const   blt = preload("res://SOUL/Bullet.tscn")
 const   sht = preload("res://Assets/Audio/Shot.wav")
 const chblt = preload("res://SOUL/Charged_Bullet.tscn")
@@ -28,18 +47,18 @@ var vel       : Vector2
 var pvel      := Vector2.DOWN
 var fall      : Vector2
 var fallspd   := 0.0
-var jumps     := blueMaxJumps
+var jumps     := maximum_jumps
 var jumping   := false
 var dash      := 0.0
-var mintshr   := 0.0
 var charge    := 0.0
+var mintshr   := 0.0
 var cyancldwn := 0.0
 var plc       : float
 var h = false
 
 func _ready():
-	plc = purpleLineCurrent
-	jumps = blueMaxJumps
+	plc = current_line
+	jumps = maximum_jumps
 	var res = SoulState.new()
 	ResourceSaver.save(res, "SoulState.tscn")
 	setState(State)
@@ -58,7 +77,6 @@ func setState(value):
 			tw.connect("finished", queue_redraw)
 	State = value
 	audio()
-	queue_redraw()
 
 func _draw():
 	if not Engine.is_editor_hint():
@@ -69,13 +87,13 @@ func _draw():
 			draw_circle_arc(Vector2.ZERO, 42.5, 39.5, 0, arc, Color(0,.5,0,.5))
 			draw_circle_arc(Vector2.ZERO, 39.5, 0, 0, arc, Color(0,0,0,.5))
 	if State.Purple:
-		for l in purpleLineNum:
+		for l in line_number:
 			draw_line(
-				Vector2((-purpleLineX-(purpleXLimit/2))/global_scale.x,
-				(l - plc) * (purpleLineSpacing / global_scale.y)).rotated(-global_rotation),
-				Vector2((-purpleLineX+(purpleXLimit/2))/global_scale.x,
-				(l - plc) * (purpleLineSpacing / global_scale.y)).rotated(-global_rotation),
-				Color("d535d9"), 3
+				Vector2((-purpleLineX-(line_lenght/2))/global_scale.x,
+				(l - plc) * (line_spacing / global_scale.y)).rotated(-global_rotation),
+				Vector2((-purpleLineX+(line_lenght/2))/global_scale.x,
+				(l - plc) * (line_spacing / global_scale.y)).rotated(-global_rotation),
+				Color("d535d9"), 3 / global_scale.x
 			)
 
 func draw_circle_arc(center, radius, radius2, angle_from, angle_to, color):
@@ -94,10 +112,14 @@ func _process(_delta):
 	if arc > 0 and arc < 360 or State.Purple:
 		purpleLineX = position.x - purpleStartPos.x
 		queue_redraw()
-	$Shield.monitoring  = State.Green
-	$Shield.monitorable = State.Green
-	$Shield.visible     = State.Green
-	$Shield.setang(pvel.angle() + PI/2)
+	$FirstShield.monitoring  = State.Green and first_shield
+	$FirstShield.monitorable = State.Green and first_shield
+	$FirstShield.visible     = State.Green and first_shield
+	$FirstShield.setang(pvel.angle() + PI/2)
+	$SecondShield.monitoring  = State.Green and second_shield
+	$SecondShield.monitorable = State.Green and second_shield
+	$SecondShield.visible     = State.Green and second_shield
+	$SecondShield.setang(pvel.angle() - PI/2)
 	$Trail.process_material.angle_min = -global_rotation_degrees
 	$Trail.process_material.angle_max = -global_rotation_degrees
 	$Trail.emitting = State.Orange
@@ -107,7 +129,7 @@ func _physics_process(delta):
 	process_texture()
 	if State.Blue:
 		motion_mode = CharacterBody2D.MOTION_MODE_GROUNDED
-		if inverted_ctrl:
+		if inverted_controls:
 			up_direction = Vector2.UP.rotated(global_rotation+PI)
 		else:
 			up_direction = Vector2.UP.rotated(global_rotation)
@@ -120,7 +142,7 @@ func _physics_process(delta):
 		if State.Red:
 			velocity = velocity.rotated(global_rotation)
 			vel = vel.rotated(global_rotation)
-			if Input.is_action_pressed("slowdown"):
+			if Input.is_action_pressed(slowdown_action):
 				velocity /= 2
 		if State.Blue:
 			var j
@@ -137,11 +159,11 @@ func _physics_process(delta):
 					j = 0
 					jumping = false
 			if is_on_floor():
-				jumps = blueMaxJumps
+				jumps = maximum_jumps
 				fallspd = 0
 				jumping = false
 				pvel = Vector2(pvel.rotated(-global_rotation).x, -100).rotated(global_rotation)
-			elif jumps == blueMaxJumps:
+			elif jumps == maximum_jumps:
 				jumps -= 1
 			if is_on_ceiling():
 				jumps = 0
@@ -149,7 +171,7 @@ func _physics_process(delta):
 			if j > 10:
 				if jumping:
 					fallspd -= (3 - fallspd) * delta * 2.5
-				elif jumps > 0 or blueMaxJumps < 0:
+				elif jumps > 0 or maximum_jumps < 0:
 					fallspd = -150
 					jumps -= 1
 					jumping = true
@@ -174,7 +196,7 @@ func _physics_process(delta):
 			set_collision_mask_value(2, dash < 0)
 			if dash > -1:
 				dash -= delta
-			elif Input.is_action_just_pressed("dash"):
+			elif Input.is_action_just_pressed(dash_action):
 				dash = .5
 			if dash > 0:
 				if State.Blue:
@@ -191,7 +213,7 @@ func _physics_process(delta):
 			else:
 				velocity /= 2
 			if cyancldwn < delta:
-				if Input.is_action_just_pressed("parry"):
+				if Input.is_action_just_pressed(parry_action):
 					$Parry/Shape.disabled = false
 					$Parry.arc = 0
 					var Tw = create_tween()
@@ -203,24 +225,24 @@ func _physics_process(delta):
 				cyancldwn -= delta
 		if State.Purple:
 			if v.y == 0 and vel.y < -1:
-				if purpleLineCurrent > 0:
-					purpleLineCurrent -= 1
+				if current_line > 0:
+					current_line -= 1
 			if v.y == 0 and vel.y > 1:
-				if purpleLineCurrent < purpleLineNum - 1:
-					purpleLineCurrent += 1
-			position.y = lerp(position.y, 
-				purpleStartPos.y + (purpleLineCurrent * purpleLineSpacing), delta*7)
-			position.x = clamp(position.x, 
-				purpleStartPos.x - (purpleXLimit/2),
-				purpleStartPos.x + (purpleXLimit/2))
+				if current_line < line_number - 1:
+					current_line += 1
+			position.y = lerp(position.y,
+				purpleStartPos.y + (current_line * line_spacing), delta*7)
+			position.x = clamp(position.x,
+				purpleStartPos.x - (line_lenght/2),
+				purpleStartPos.x + (line_lenght/2))
 		if State.Mint:
 			if mintshr > -2:
 				mintshr -= delta
-			elif Input.is_action_just_pressed("shrink"):
+			elif Input.is_action_just_pressed(shrink_action):
 				mintshr = 3
 			if mintshr > 0:
-				scale.x = lerp(scale.x, mintStandardSize / 2, delta)
-				scale.y = lerp(scale.y, mintStandardSize / 2, delta)
+				scale.x = lerp(scale.x, default_size / 2, delta)
+				scale.y = lerp(scale.y, default_size / 2, delta)
 				if State.Blue:
 					var p = velocity.rotated(-global_rotation)
 					p.x *= 3
@@ -232,22 +254,22 @@ func _physics_process(delta):
 				elif modulate.v < 1:
 					modulate.v += delta * 2
 			else:
-				scale.x = lerp(scale.x, mintStandardSize, delta)
-				scale.y = lerp(scale.y, mintStandardSize, delta)
+				scale.x = lerp(scale.x, default_size, delta)
+				scale.y = lerp(scale.y, default_size, delta)
 		if State.Yellow:
-			if yellowMouseTarget:
+			if mouse_target:
 				rotation = get_global_mouse_position().angle_to_point(global_position) + PI/2
 			$Aud2.volume_db = log(charge) / 10 + 1
 			$Aud2.pitch_scale = min(charge * 2, 1) + 0.001
-			if Input.is_action_pressed("shoot"):
+			if Input.is_action_pressed(shot_action):
 				charge += delta
-			if Input.is_action_just_released("shoot"):
+			if Input.is_action_just_released(shot_action):
 				shoot()
 			$Charge.modulate.a = min((charge - .2) * 2, 1)
 		if State.value() != SoulState.GREEN:
 			move_and_slide()
 	if State.Purple:
-		plc = lerp(plc, purpleLineCurrent, delta*7)
+		plc = lerp(plc, current_line, delta*7)
 
 func process_texture():
 	var total = int(State.Red) + int(State.Orange) + int(State.Yellow) + int(State.Green) + \
@@ -271,7 +293,7 @@ func audio():
 
 func shoot():
 	var bullet
-	if charge > 0.4 and yellowChargedShots:
+	if charge > 0.4 and charged_shots:
 		bullet = chblt.instantiate()
 		$Aud.stream = chsht
 	else:
@@ -291,7 +313,7 @@ func slam(rot8ion, speed = 200):
 
 func handle_input():
 	vel = Input.get_vector("left", "right", "up", "down") * global_scale * 100
-	if inverted_ctrl:
+	if inverted_controls:
 		vel *= -1
 	if State.Orange or State.Green:
 		if vel != Vector2(0,0):
@@ -337,7 +359,7 @@ func handle_hitbox(delta):
 			if zero(Obj.get("delete")):
 				Obj.queue_free()
 	if State.Green:
-		for Obj in $Shield.get_overlapping_areas():
+		for Obj in $FirstShield.get_overlapping_areas():
 			if zero(Obj.get("atkType")) & Atk.Block:
 				Obj.Block()
 	if State.Cyan:

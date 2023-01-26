@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://khs156tubdae"]
+[gd_scene load_steps=18 format=3 uid="uid://khs156tubdae"]
 
 [ext_resource type="Script" path="res://SOUL/All.gd" id="1_cmo2o"]
 [ext_resource type="Script" path="res://SOUL/Soul State.gd" id="2_8etoh"]
@@ -8,15 +8,15 @@
 [ext_resource type="Texture2D" uid="uid://bko3qagitwb04" path="res://Assets/Sprites/SOUL.png" id="4_odib5"]
 [ext_resource type="Script" path="res://SOUL/TP Sprite.gd" id="5_pwkb7"]
 [ext_resource type="AudioStream" uid="uid://0lj2iws54oj4" path="res://Assets/Audio/Shot_Charging.wav" id="5_t7nht"]
-[ext_resource type="FontFile" uid="uid://cddm5ihdbkpkc" path="res://Assets/Mars.ttf" id="7_lb4ba"]
 [ext_resource type="Script" path="res://SOUL/GreenShield.gd" id="10_4b6yx"]
+[ext_resource type="FontFile" uid="uid://cddm5ihdbkpkc" path="res://Assets/Mars.ttf" id="10_74h5r"]
 
 [sub_resource type="Resource" id="Resource_1pawt"]
 script = ExtResource("2_8etoh")
 Red = false
-Orange = true
+Orange = false
 Yellow = false
-Green = true
+Green = false
 Mint = false
 Cyan = false
 Blue = false
@@ -40,6 +40,8 @@ scale_min = 1.5
 scale_max = 1.5
 color_ramp = SubResource("GradientTexture1D_hfhf3")
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_khmwo"]
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lvcve"]
 size = Vector2(10, 10)
 
@@ -51,7 +53,8 @@ motion_mode = 1
 safe_margin = 2.0
 script = ExtResource("1_cmo2o")
 State = SubResource("Resource_1pawt")
-purpleLineCurrent = 1.0
+parry_action = null
+current_line = 1.0
 
 [node name="TP" type="Area2D" parent="."]
 position = Vector2(0, 3.33333)
@@ -68,17 +71,35 @@ script = ExtResource("4_lobpj")
 shape = SubResource("CircleShape2D_khjwg")
 disabled = true
 
-[node name="Shield" type="Area2D" parent="."]
+[node name="FirstShield" type="Area2D" parent="."]
+visible = false
 rotation = -3.14159
+monitoring = false
+monitorable = false
 script = ExtResource("10_4b6yx")
 
-[node name="Line2D" type="Line2D" parent="Shield"]
+[node name="Line2D" type="Line2D" parent="FirstShield"]
 position = Vector2(0, 7.62939e-06)
 points = PackedVector2Array(-16, -37, -9, -40, 0, -41, 8, -40, 15, -38, 0, 0)
 width = 5.0
 default_color = Color(0.380392, 0.121569, 0.690196, 1)
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Shield"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="FirstShield"]
+polygon = PackedVector2Array(-17, -39, -8.6666, -42.6667, 6.10352e-05, -43.3333, 9.33339, -42, 18.6667, -39.3333, 16, -34, -15, -34)
+
+[node name="SecondShield" type="Area2D" parent="."]
+visible = false
+monitoring = false
+monitorable = false
+script = ExtResource("10_4b6yx")
+
+[node name="Line2D" type="Line2D" parent="SecondShield"]
+position = Vector2(0, 7.62939e-06)
+points = PackedVector2Array(-16, -37, -9, -40, 0, -41, 8, -40, 15, -38, 0, 0)
+width = 5.0
+default_color = Color(0.43539, 0.69, 0.1242, 1)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="SecondShield"]
 polygon = PackedVector2Array(-17, -39, -8.6666, -42.6667, 6.10352e-05, -43.3333, 9.33339, -42, 18.6667, -39.3333, 16, -34, -15, -34)
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
@@ -87,7 +108,9 @@ scale = Vector2(1.2, 1.2)
 polygon = PackedVector2Array(-1.19209e-06, -4, 4, -8, 6, -8, 8, -6, 8, 1.33333, -1.19209e-06, 9.33333, -8, 1.33333, -8, -6, -6, -8, -4, -8)
 
 [node name="Trail" type="GPUParticles2D" parent="."]
+emitting = false
 process_material = SubResource("ParticleProcessMaterial_ujc20")
+texture = SubResource("ViewportTexture_khmwo")
 lifetime = 0.5
 
 [node name="Sprite" type="SubViewport" parent="."]
@@ -100,14 +123,15 @@ modulate = Color(1, 0, 0, 1)
 texture = ExtResource("4_odib5")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 9.5, 20)
+region_rect = Rect2(0, 0, 2.375, 20)
 
 [node name="Orange" type="Sprite2D" parent="Sprite"]
+visible = false
 modulate = Color(1, 0.658824, 0, 1)
 texture = ExtResource("4_odib5")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 9.5, 20)
+region_rect = Rect2(0, 0, 2.71429, 20)
 
 [node name="Yellow" type="Sprite2D" parent="Sprite"]
 visible = false
@@ -115,15 +139,15 @@ modulate = Color(1, 1, 0, 1)
 texture = ExtResource("4_odib5")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 9.5, 20)
+region_rect = Rect2(0, 0, 3.16667, 20)
 
 [node name="Green" type="Sprite2D" parent="Sprite"]
+visible = false
 modulate = Color(0, 0.752941, 0, 1)
-position = Vector2(9.5, 0)
 texture = ExtResource("4_odib5")
 centered = false
 region_enabled = true
-region_rect = Rect2(9.5, 0, 9.5, 20)
+region_rect = Rect2(0, 0, 19, 20)
 
 [node name="Mint" type="Sprite2D" parent="Sprite"]
 visible = false
@@ -131,34 +155,36 @@ modulate = Color(0.0235294, 0.788235, 0.509804, 1)
 texture = ExtResource("4_odib5")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 19, 20)
+region_rect = Rect2(0, 0, 9.5, 20)
 
 [node name="Cyan" type="Sprite2D" parent="Sprite"]
 visible = false
 modulate = Color(0, 1, 1, 1)
+texture = ExtResource("4_odib5")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 6.33333, 20)
+
+[node name="Blue" type="Sprite2D" parent="Sprite"]
+visible = false
+modulate = Color(0, 0.235294, 1, 1)
 position = Vector2(9.5, 0)
 texture = ExtResource("4_odib5")
 centered = false
 region_enabled = true
 region_rect = Rect2(9.5, 0, 9.5, 20)
 
-[node name="Blue" type="Sprite2D" parent="Sprite"]
-visible = false
-modulate = Color(0, 0.235294, 1, 1)
-texture = ExtResource("4_odib5")
-centered = false
-region_enabled = true
-region_rect = Rect2(0, 0, 19, 20)
-
 [node name="Purple" type="Sprite2D" parent="Sprite"]
 visible = false
 modulate = Color(0.835294, 0.207843, 0.85098, 1)
+position = Vector2(12.6667, 0)
 texture = ExtResource("4_odib5")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 19, 20)
+region_rect = Rect2(12.6667, 0, 6.33333, 20)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("ViewportTexture_khmwo")
 
 [node name="Charge" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0)
@@ -195,7 +221,7 @@ offset_left = -18.0
 offset_top = -7.0
 offset_right = 20.0
 offset_bottom = 12.0
-theme_override_fonts/font = ExtResource("7_lb4ba")
+theme_override_fonts/font = ExtResource("10_74h5r")
 text = "2"
 horizontal_alignment = 1
 

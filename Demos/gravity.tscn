@@ -1,9 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://doehtfo6ahf15"]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="PackedScene" uid="uid://41vr7h3bcr8" path="res://Bullet Boards/BulletBox.tscn" id="1"]
 [ext_resource type="Script" path="res://Demos/gravity.gd" id="3"]
 [ext_resource type="PackedScene" uid="uid://khs156tubdae" path="res://SOUL/Soul.tscn" id="3_atxly"]
-[ext_resource type="FontFile" uid="uid://cddm5ihdbkpkc" path="res://Assets/Mars.ttf" id="3_fmmp5"]
+[ext_resource type="FontFile" uid="uid://cddm5ihdbkpkc" path="res://Assets/Fonts/Mars.ttf" id="3_fmmp5"]
 [ext_resource type="Script" path="res://SOUL/Soul State.gd" id="4_nkrbu"]
 
 [sub_resource type="Resource" id="Resource_0jihk"]
