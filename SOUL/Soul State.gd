@@ -1,7 +1,7 @@
+@icon("res://icons/SoulState.svg")
+
 extends Resource
 class_name SoulState
-
-@icon("res://icons/SoulState.svg")
 
 @export var Red := false
 @export var Orange := false

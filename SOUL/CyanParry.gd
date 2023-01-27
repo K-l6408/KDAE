@@ -1,5 +1,5 @@
-extends Area2D
 @tool
+extends Area2D
 var arc := 0.
 
 func _process(_delta):

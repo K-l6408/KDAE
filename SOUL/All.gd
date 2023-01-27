@@ -1,8 +1,8 @@
 @tool
+@icon("res://icons/Soul.svg")
+
 extends CharacterBody2D
 class_name Soul
-
-@icon("res://icons/Soul.svg")
 
 @onready @export var State : SoulState : set = setState
 @export_group("Settings")
@@ -28,9 +28,13 @@ class_name Soul
 @export_group("Settings/Purple")
 @export var line_number = 3
 @export var line_spacing = 100
-@export var current_line = 0.0
-@export var line_lenght = 300.
-var purpleLineX = 0.0
+@export var current_line = 0
+@export var line_rotation = 0
+@export var line_extents : PackedVector2Array = [
+	Vector2(-150, 150),
+	Vector2(-150, 150),
+	Vector2(-150, 150)
+]
 @onready var purpleStartPos := Vector2(
 	position.x,
 	position.y - current_line*(line_spacing))
@@ -86,15 +90,6 @@ func _draw():
 		elif State.Green:
 			draw_circle_arc(Vector2.ZERO, 42.5, 39.5, 0, arc, Color(0,.5,0,.5))
 			draw_circle_arc(Vector2.ZERO, 39.5, 0, 0, arc, Color(0,0,0,.5))
-	if State.Purple:
-		for l in line_number:
-			draw_line(
-				Vector2((-purpleLineX-(line_lenght/2))/global_scale.x,
-				(l - plc) * (line_spacing / global_scale.y)).rotated(-global_rotation),
-				Vector2((-purpleLineX+(line_lenght/2))/global_scale.x,
-				(l - plc) * (line_spacing / global_scale.y)).rotated(-global_rotation),
-				Color("d535d9"), 3 / global_scale.x
-			)
 
 func draw_circle_arc(center, radius, radius2, angle_from, angle_to, color):
 	var nb_points = 32
@@ -109,8 +104,7 @@ func draw_circle_arc(center, radius, radius2, angle_from, angle_to, color):
 	draw_polygon(points_arc, colors)
 
 func _process(_delta):
-	if arc > 0 and arc < 360 or State.Purple:
-		purpleLineX = position.x - purpleStartPos.x
+	if arc > 0 and arc <= 360:
 		queue_redraw()
 	$FirstShield.monitoring  = State.Green and first_shield
 	$FirstShield.monitorable = State.Green and first_shield
@@ -215,7 +209,7 @@ func _physics_process(delta):
 			if cyancldwn < delta:
 				if Input.is_action_just_pressed(parry_action):
 					$Parry/Shape.disabled = false
-					$Parry.arc = 0
+					$Parry.arc = 0.0
 					var Tw = create_tween()
 					Tw.connect("finished", $Parry.disable)
 					Tw.tween_property($Parry, "arc", 1440, .7)
@@ -224,17 +218,26 @@ func _physics_process(delta):
 			else:
 				cyancldwn -= delta
 		if State.Purple:
-			if v.y == 0 and vel.y < -1:
-				if current_line > 0:
+			if State.Blue:
+				rotation_degrees = line_rotation + 90
+			var temp = (position-purpleStartPos).rotated(deg_to_rad(-line_rotation))+purpleStartPos
+			temp.x = clamp(temp.x - purpleStartPos.x,
+			line_extents[current_line].x, line_extents[current_line].y) + purpleStartPos.x
+			temp.y = lerp(temp.y, (current_line * line_spacing) + purpleStartPos.y, delta * 7)
+			position = (temp-purpleStartPos).rotated(deg_to_rad(line_rotation))+purpleStartPos
+			velocity.x = velocity.rotated(deg_to_rad(-line_rotation)).x
+			velocity.y = 0
+			velocity = velocity.rotated(deg_to_rad(line_rotation))
+			if current_line > 0:
+				if vel.rotated(deg_to_rad(-line_rotation)).y < -30 and not v.rotated(deg_to_rad(-line_rotation)).y < -30 \
+				and temp.x - purpleStartPos.x == \
+				clamp(temp.x - purpleStartPos.x, line_extents[current_line -1].x, line_extents[current_line -1].y):
 					current_line -= 1
-			if v.y == 0 and vel.y > 1:
-				if current_line < line_number - 1:
+			if current_line < line_number - 1:
+				if vel.rotated(deg_to_rad(-line_rotation)).y > 30 and not v.rotated(deg_to_rad(-line_rotation)).y > 30 \
+				and temp.x - purpleStartPos.x == \
+				clamp(temp.x - purpleStartPos.x, line_extents[current_line +1].x, line_extents[current_line +1].y):
 					current_line += 1
-			position.y = lerp(position.y,
-				purpleStartPos.y + (current_line * line_spacing), delta*7)
-			position.x = clamp(position.x,
-				purpleStartPos.x - (line_lenght/2),
-				purpleStartPos.x + (line_lenght/2))
 		if State.Mint:
 			if mintshr > -2:
 				mintshr -= delta
@@ -269,7 +272,28 @@ func _physics_process(delta):
 		if State.value() != SoulState.GREEN:
 			move_and_slide()
 	if State.Purple:
-		plc = lerp(plc, current_line, delta*7)
+		plc = lerp(plc, float(current_line), delta*7)
+		line_extents.resize(line_number)
+		$Lines.position = Vector2(0,0)
+		$Lines.rotation_degrees = line_rotation - rotation_degrees
+		var lc = $Lines.get_child_count()
+		if lc < line_number:
+			var L = Line2D.new()
+			$Lines.add_child(L)
+		if lc > line_number:
+			$Lines.get_child(0).queue_free()
+		for c in min($Lines.get_child_count(), line_number):
+			var temp = (position-purpleStartPos).rotated(deg_to_rad(-line_rotation))
+			var L = $Lines.get_child(c)
+			L.default_color = Color("9c279f")
+			L.width = 2
+			L.points = [Vector2(line_extents[c].x, 0), Vector2(line_extents[c].y, 0)]
+			L.position = Vector2(-temp.x, (c - plc) * line_spacing) / global_scale
+			if line_extents[c] == Vector2(0,0):
+				line_extents[c] = Vector2(-150,150)
+	else:
+		for L in $Lines.get_children():
+			L.queue_free()
 
 func process_texture():
 	var total = int(State.Red) + int(State.Orange) + int(State.Yellow) + int(State.Green) + \

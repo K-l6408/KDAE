@@ -20,7 +20,7 @@ Green = false
 Mint = false
 Cyan = false
 Blue = false
-Purple = false
+Purple = true
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_khjwg"]
 radius = 40.0
@@ -40,7 +40,7 @@ scale_min = 1.5
 scale_max = 1.5
 color_ramp = SubResource("GradientTexture1D_hfhf3")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_khmwo"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_v8di6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lvcve"]
 size = Vector2(10, 10)
@@ -53,8 +53,10 @@ motion_mode = 1
 safe_margin = 2.0
 script = ExtResource("1_cmo2o")
 State = SubResource("Resource_1pawt")
-parry_action = null
-current_line = 1.0
+current_line = 1
+line_extents = PackedVector2Array(-150, 150, -150, 150, -150, 150)
+
+[node name="Lines" type="Node2D" parent="."]
 
 [node name="TP" type="Area2D" parent="."]
 position = Vector2(0, 3.33333)
@@ -104,13 +106,12 @@ polygon = PackedVector2Array(-17, -39, -8.6666, -42.6667, 6.10352e-05, -43.3333,
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 position = Vector2(0, -0.666672)
-scale = Vector2(1.2, 1.2)
 polygon = PackedVector2Array(-1.19209e-06, -4, 4, -8, 6, -8, 8, -6, 8, 1.33333, -1.19209e-06, 9.33333, -8, 1.33333, -8, -6, -6, -8, -4, -8)
 
 [node name="Trail" type="GPUParticles2D" parent="."]
 emitting = false
 process_material = SubResource("ParticleProcessMaterial_ujc20")
-texture = SubResource("ViewportTexture_khmwo")
+texture = SubResource("ViewportTexture_v8di6")
 lifetime = 0.5
 
 [node name="Sprite" type="SubViewport" parent="."]
@@ -175,16 +176,14 @@ region_enabled = true
 region_rect = Rect2(9.5, 0, 9.5, 20)
 
 [node name="Purple" type="Sprite2D" parent="Sprite"]
-visible = false
 modulate = Color(0.835294, 0.207843, 0.85098, 1)
-position = Vector2(12.6667, 0)
 texture = ExtResource("4_odib5")
 centered = false
 region_enabled = true
-region_rect = Rect2(12.6667, 0, 6.33333, 20)
+region_rect = Rect2(0, 0, 19, 20)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = SubResource("ViewportTexture_khmwo")
+texture = SubResource("ViewportTexture_v8di6")
 
 [node name="Charge" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0)

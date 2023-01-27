@@ -1,5 +1,5 @@
-extends Node2D
 @tool
+extends Node2D
 
 @export var State : SoulState
 @export var Rotation : float

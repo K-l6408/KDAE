@@ -1,5 +1,5 @@
-extends CanvasGroup
 @tool
+extends CanvasGroup
 const default = Color(0,0.5,0,1)
 @export var Size: Vector2
 @export var color: Color = default

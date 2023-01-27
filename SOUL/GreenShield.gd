@@ -1,5 +1,5 @@
-extends Area2D
 @tool
+extends Area2D
 
 var Rot = 0
 
