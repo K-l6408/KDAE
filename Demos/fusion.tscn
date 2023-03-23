@@ -20,7 +20,6 @@ Purple = false
 position = Vector2(574, 309)
 script = ExtResource("1_n422r")
 State = SubResource("Resource_rcesh")
-Rotation = 0.0
 
 [node name="Box" parent="." instance=ExtResource("1_fwelq")]
 position = Vector2(0, 0)

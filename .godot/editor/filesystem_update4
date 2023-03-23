@@ -1,7 +1,4 @@
-res://SOUL/Soul.tscn
-res://SOUL/All.gd
 res://Demos/multiFusion.tscn
+res://SOUL/All.gd
+res://SOUL/Soul.tscn
 res://Demos/fusion.tscn
-res://Demos/fusion.gd
-res://Bullet Boards/BulletBox.gd
-res://SOUL/CyanParry.gd

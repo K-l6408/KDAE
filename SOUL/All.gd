@@ -4,7 +4,7 @@
 extends CharacterBody2D
 class_name Soul
 
-@onready @export var State : SoulState : set = setState
+@export var State : SoulState : set = setState
 @export_group("Settings")
 @export var inverted_controls = false
 @export_group("Settings/Red")
@@ -20,11 +20,11 @@ class_name Soul
 @export var second_shield := false
 @export_group("Settings/Mint")
 @export var shrink_action := "ui_cancel"
-@export var default_size := 1.5
+@export var default_size := 1.
 @export_group("Settings/Cyan")
 @export var parry_action := "ui_cancel"
 @export_group("Settings/Blue")
-@export var maximum_jumps = 2
+@export var maximum_jumps := 2
 @export_group("Settings/Purple")
 @export var line_number = 3
 @export var line_spacing = 100
@@ -44,6 +44,7 @@ const   blt = preload("res://SOUL/Bullet.tscn")
 const   sht = preload("res://Assets/Audio/Shot.wav")
 const chblt = preload("res://SOUL/Charged_Bullet.tscn")
 const chsht = preload("res://Assets/Audio/Shot_Charged.wav")
+var px = 100
 var TPd       := []
 var arc       := 0
 var iframes   := 0.0
@@ -171,13 +172,15 @@ func _physics_process(delta):
 					jumping = true
 			else:
 				jumping = false
+			if fallspd > 500:
+				fallspd = 500
 			var lt = jumps + 1 - int(is_on_floor())
 			if lt > 1:
 				$Label.show()
 				$Label.text = str(lt)
 			elif lt < 0:
 				$Label.show()
-				$Label.text = "inf"
+				$Label.text = "∞"
 			else:
 				$Label.hide()
 			fallspd += 100 * delta * 4
@@ -199,6 +202,16 @@ func _physics_process(delta):
 					velocity = p.rotated(global_rotation)
 				else:
 					velocity /= .375
+			if State.Purple:
+				if abs(pvel.rotated(-global_rotation - deg_to_rad(line_rotation)).x) <= 10:
+					pvel += Vector2(px, 0).rotated(global_rotation + deg_to_rad(line_rotation))
+				else:
+					px = pvel.rotated(-global_rotation - deg_to_rad(line_rotation)).x
+			elif State.Blue:
+				if pvel.rotated(-global_rotation).x == 0:
+					pvel += Vector2(px, 0).rotated(global_rotation)
+				else:
+					px = pvel.rotated(global_rotation).x
 		if State.Cyan:
 			if State.Blue:
 				var p = velocity.rotated(-global_rotation)
@@ -209,7 +222,7 @@ func _physics_process(delta):
 			if cyancldwn < delta:
 				if Input.is_action_just_pressed(parry_action):
 					$Parry/Shape.disabled = false
-					$Parry.arc = 0.0
+					$Parry.arc = 0
 					var Tw = create_tween()
 					Tw.connect("finished", $Parry.disable)
 					Tw.tween_property($Parry, "arc", 1440, .7)
@@ -219,22 +232,27 @@ func _physics_process(delta):
 				cyancldwn -= delta
 		if State.Purple:
 			if State.Blue:
-				rotation_degrees = line_rotation + 90
+				line_rotation = rotation_degrees - 90
 			var temp = (position-purpleStartPos).rotated(deg_to_rad(-line_rotation))+purpleStartPos
+			if State.Orange and temp.x != clamp(temp.x - purpleStartPos.x,\
+			line_extents[current_line].x, line_extents[current_line].y) + purpleStartPos.x:
+				pvel -= Vector2(px, 0).rotated(global_rotation + deg_to_rad(line_rotation))
+				px *= -1
+				velocity *= -1
 			temp.x = clamp(temp.x - purpleStartPos.x,
 			line_extents[current_line].x, line_extents[current_line].y) + purpleStartPos.x
-			temp.y = lerp(temp.y, (current_line * line_spacing) + purpleStartPos.y, delta * 7)
+			temp.y = lerp(temp.y, (current_line * line_spacing) + purpleStartPos.y, delta * 5)
 			position = (temp-purpleStartPos).rotated(deg_to_rad(line_rotation))+purpleStartPos
 			velocity.x = velocity.rotated(deg_to_rad(-line_rotation)).x
 			velocity.y = 0
 			velocity = velocity.rotated(deg_to_rad(line_rotation))
 			if current_line > 0:
-				if vel.rotated(deg_to_rad(-line_rotation)).y < -30 and not v.rotated(deg_to_rad(-line_rotation)).y < -30 \
+				if vel.rotated(deg_to_rad(-line_rotation)).y < -70 and not v.rotated(deg_to_rad(-line_rotation)).y < -70 \
 				and temp.x - purpleStartPos.x == \
 				clamp(temp.x - purpleStartPos.x, line_extents[current_line -1].x, line_extents[current_line -1].y):
 					current_line -= 1
 			if current_line < line_number - 1:
-				if vel.rotated(deg_to_rad(-line_rotation)).y > 30 and not v.rotated(deg_to_rad(-line_rotation)).y > 30 \
+				if vel.rotated(deg_to_rad(-line_rotation)).y > 70 and not v.rotated(deg_to_rad(-line_rotation)).y > 70 \
 				and temp.x - purpleStartPos.x == \
 				clamp(temp.x - purpleStartPos.x, line_extents[current_line +1].x, line_extents[current_line +1].y):
 					current_line += 1
@@ -271,6 +289,9 @@ func _physics_process(delta):
 			$Charge.modulate.a = min((charge - .2) * 2, 1)
 		if State.value() != SoulState.GREEN:
 			move_and_slide()
+			var collision = get_last_slide_collision()
+			if is_on_wall() and collision and State.Orange:
+				pvel = pvel.bounce(collision.get_normal())
 	if State.Purple:
 		plc = lerp(plc, float(current_line), delta*7)
 		line_extents.resize(line_number)
@@ -288,7 +309,7 @@ func _physics_process(delta):
 			L.default_color = Color("9c279f")
 			L.width = 2
 			L.points = [Vector2(line_extents[c].x, 0), Vector2(line_extents[c].y, 0)]
-			L.position = Vector2(-temp.x, (c - plc) * line_spacing) / global_scale
+			L.position = Vector2(-temp.x, (c - plc) * line_spacing)
 			if line_extents[c] == Vector2(0,0):
 				line_extents[c] = Vector2(-150,150)
 	else:
@@ -336,7 +357,7 @@ func slam(rot8ion, speed = 200):
 	fallspd = speed
 
 func handle_input():
-	vel = Input.get_vector("left", "right", "up", "down") * global_scale * 100
+	vel = Input.get_vector("left", "right", "up", "down") * 150
 	if inverted_controls:
 		vel *= -1
 	if State.Orange or State.Green:
