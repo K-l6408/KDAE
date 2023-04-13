@@ -18,9 +18,6 @@ class_name Soul
 @export_group("Settings/Green")
 @export var first_shield := true
 @export var second_shield := false
-@export_group("Settings/Mint")
-@export var shrink_action := "ui_cancel"
-@export var default_size := 1.
 @export_group("Settings/Cyan")
 @export var parry_action := "ui_cancel"
 @export_group("Settings/Blue")
@@ -49,14 +46,13 @@ var TPd       := []
 var arc       := 0
 var iframes   := 0.0
 var vel       : Vector2
-var pvel      := Vector2.DOWN
+var pvel      := Vector2.DOWN * 100
 var fall      : Vector2
 var fallspd   := 0.0
 var jumps     := maximum_jumps
 var jumping   := false
 var dash      := 0.0
 var charge    := 0.0
-var mintshr   := 0.0
 var cyancldwn := 0.0
 var plc       : float
 var h = false
@@ -256,27 +252,6 @@ func _physics_process(delta):
 				and temp.x - purpleStartPos.x == \
 				clamp(temp.x - purpleStartPos.x, line_extents[current_line +1].x, line_extents[current_line +1].y):
 					current_line += 1
-		if State.Mint:
-			if mintshr > -2:
-				mintshr -= delta
-			elif Input.is_action_just_pressed(shrink_action):
-				mintshr = 3
-			if mintshr > 0:
-				scale.x = lerp(scale.x, default_size / 2, delta)
-				scale.y = lerp(scale.y, default_size / 2, delta)
-				if State.Blue:
-					var p = velocity.rotated(-global_rotation)
-					p.x *= 3
-					velocity = p.rotated(global_rotation)
-				else:
-					velocity *= 3
-				if (mintshr + .5) - floor(mintshr + .5) < delta:
-					modulate.v = 0
-				elif modulate.v < 1:
-					modulate.v += delta * 2
-			else:
-				scale.x = lerp(scale.x, default_size, delta)
-				scale.y = lerp(scale.y, default_size, delta)
 		if State.Yellow:
 			if mouse_target:
 				rotation = get_global_mouse_position().angle_to_point(global_position) + PI/2
@@ -318,7 +293,7 @@ func _physics_process(delta):
 
 func process_texture():
 	var total = int(State.Red) + int(State.Orange) + int(State.Yellow) + int(State.Green) + \
-	int(State.Mint) + int(State.Cyan) + int(State.Blue) + int(State.Purple)
+	int(State.Cyan) + int(State.Blue) + int(State.Purple)
 	var i = 0.0
 	for j in $Sprite.get_children():
 		if State.get(j.name):

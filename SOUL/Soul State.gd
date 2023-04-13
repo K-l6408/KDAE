@@ -7,7 +7,6 @@ class_name SoulState
 @export var Orange := false
 @export var Yellow := false
 @export var Green := false
-@export var Mint := false
 @export var Cyan := false
 @export var Blue := false
 @export var Purple := false
@@ -16,21 +15,19 @@ const RED := 1
 const ORANGE := 2
 const YELLOW := 4
 const GREEN := 8
-const MINT := 16
-const CYAN := 32
-const BLUE := 64
-const PURPLE := 128
+const CYAN := 16
+const BLUE := 32
+const PURPLE := 64
 
 func _init(val := 0):
-	Red = val & 1
-	Orange = val & 2
-	Yellow = val & 4
-	Green = val & 8
-	Mint = val & 16
-	Cyan = val & 32
-	Blue = val & 64
-	Purple = val & 128
+	Red = val & RED
+	Orange = val & ORANGE
+	Yellow = val & YELLOW
+	Green = val & GREEN
+	Cyan = val & CYAN
+	Blue = val & BLUE
+	Purple = val & PURPLE
 
 func value():
-	return int(Purple) * 128 + int(Blue) * 64 + int(Cyan) * 32 + int(Mint) * 16 + \
-	int(Green) * 8 + int(Yellow) * 4 + int(Orange) * 2 + int(Red)
+	return int(Purple) * PURPLE + int(Blue) * BLUE + int(Cyan) * CYAN + \
+	int(Green) * GREEN + int(Yellow) * YELLOW + int(Orange) * ORANGE + int(Red) * RED

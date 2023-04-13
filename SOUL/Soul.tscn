@@ -13,14 +13,13 @@
 
 [sub_resource type="Resource" id="Resource_1pawt"]
 script = ExtResource("2_8etoh")
-Red = false
+Red = true
 Orange = false
 Yellow = false
 Green = false
-Mint = false
 Cyan = false
 Blue = false
-Purple = true
+Purple = false
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_khjwg"]
 radius = 40.0
@@ -48,7 +47,6 @@ motion_mode = 1
 safe_margin = 2.0
 script = ExtResource("1_cmo2o")
 State = SubResource("Resource_1pawt")
-current_line = 1
 line_extents = PackedVector2Array(-150, 150, -150, 150, -150, 150)
 
 [node name="Lines" type="Node2D" parent="."]
@@ -70,6 +68,7 @@ disabled = true
 
 [node name="FirstShield" type="Area2D" parent="."]
 visible = false
+rotation = -3.14159
 monitoring = false
 monitorable = false
 script = ExtResource("10_4b6yx")
@@ -112,12 +111,11 @@ transparent_bg = true
 size = Vector2i(19, 20)
 
 [node name="Red" type="Sprite2D" parent="Sprite"]
-visible = false
 modulate = Color(1, 0, 0, 1)
 texture = ExtResource("4_odib5")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 2.375, 20)
+region_rect = Rect2(0, 0, 19, 20)
 
 [node name="Orange" type="Sprite2D" parent="Sprite"]
 visible = false
@@ -125,7 +123,7 @@ modulate = Color(1, 0.658824, 0, 1)
 texture = ExtResource("4_odib5")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 2.71429, 20)
+region_rect = Rect2(0, 0, 9.5, 20)
 
 [node name="Yellow" type="Sprite2D" parent="Sprite"]
 visible = false
@@ -133,7 +131,7 @@ modulate = Color(1, 1, 0, 1)
 texture = ExtResource("4_odib5")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 3.16667, 20)
+region_rect = Rect2(0, 0, 19, 20)
 
 [node name="Green" type="Sprite2D" parent="Sprite"]
 visible = false
@@ -142,14 +140,6 @@ texture = ExtResource("4_odib5")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 19, 20)
-
-[node name="Mint" type="Sprite2D" parent="Sprite"]
-visible = false
-modulate = Color(0.0235294, 0.788235, 0.509804, 1)
-texture = ExtResource("4_odib5")
-centered = false
-region_enabled = true
-region_rect = Rect2(0, 0, 9.5, 20)
 
 [node name="Cyan" type="Sprite2D" parent="Sprite"]
 visible = false
@@ -169,6 +159,7 @@ region_enabled = true
 region_rect = Rect2(9.5, 0, 9.5, 20)
 
 [node name="Purple" type="Sprite2D" parent="Sprite"]
+visible = false
 modulate = Color(0.835294, 0.207843, 0.85098, 1)
 texture = ExtResource("4_odib5")
 centered = false
